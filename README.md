@@ -1,10 +1,11 @@
 # Render Codex Plugin
 
-Use Render from Codex to deploy apps, validate `render.yaml`, debug failed deploys, monitor services, and work through common platform workflows.
+Use Render from Codex to deploy apps, validate `render.yaml`, debug failed deploys, monitor services, and run code in Render Sandboxes.
 
 ## What you get
 
-- Bundled Render skills for deployment, debugging, monitoring, migrations, and workflows
+- The Render MCP server configuration for connecting your Render account through OAuth
+- Bundled Render skills for deployment, debugging, monitoring, migrations, workflows, and [Sandboxes](skills/render-sandboxes/SKILL.md)
 - A helper script at `scripts/validate-render-yaml.sh` for `render blueprints validate`
 - Plugin metadata and assets for Codex installation
 
@@ -61,16 +62,24 @@ Use the plugin to:
 - Validate and troubleshoot `render.yaml`
 - Debug failed deploys and check service status
 - Work through common setup and migration tasks
+- Run scripts and test dependencies in a Render Sandbox
 
 Good first prompts:
 
 - `Help me deploy this project to Render.`
 - `Help me validate my render.yaml for Render.`
 - `Debug a failed Render deployment.`
+- `Run this Python script in a Render Sandbox with network access disabled. Show the output, then delete the sandbox.`
+
+### Sandbox tasks
+
+The [sandbox skill](skills/render-sandboxes/SKILL.md) guides Codex through running commands, transferring files, inspecting results, and cleaning up. Use a Render workspace with Sandboxes access.
+
+If the connected MCP server does not expose sandbox tools, the skill can use the Render CLI instead. See the [CLI workflow](skills/render-sandboxes/references/cli.md) for setup and supported network policies.
 
 ## Set up the Render CLI
 
-Many Render workflows depend on the Render CLI.
+Install the Render CLI for Blueprint validation and workflows that use CLI commands. Its login is separate from the plugin's MCP connection.
 
 1. Install the Render CLI:
 
@@ -101,6 +110,8 @@ Run the sync script to refresh `skills/` from [render-oss/skills](https://github
 ```
 
 GitHub Actions also runs `.github/workflows/sync-skills.yml` each day and opens a pull request when upstream skills change.
+
+Make skill changes in the shared repository before syncing them here. For sandbox support, coordinate the release with the [Render MCP server](https://github.com/render-oss/render-mcp-server) maintainers so the hosted connection exposes the required tools.
 
 ## License
 
